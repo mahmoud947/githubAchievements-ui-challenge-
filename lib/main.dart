@@ -71,83 +71,87 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(child: AchievementsScreen()),
+    return Scaffold(
+      body: SafeArea(
+        child: AchievementsScreen(
+          animation: _animation,
+          yController: _yController,
+        ),
+      ),
     );
   }
 }
-/*
-Column(
-          children: [
-            const SizedBox(
-              height: 100,
-              width: double.infinity,
-            ),
-            AnimatedBuilder(
-              animation: Listenable.merge([
-                _xController,
-                _yController,
-                _zController,
-              ]),
-              builder: (context, child) {
-                return Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.identity()
-                    ..rotateY(_animation.evaluate(
-                      CurvedAnimation(
-                        parent: _yController,
-                        curve: Curves.li, // Use an easing curve
-                      ),
-                    )),
-                  child: Stack(
-                    children: [
-                      SizedBox(
-                          height: 200,
-                          width: 200,
-                          child: Image.asset(
-                              "assets/images/galaxy-brain-default.png"))
-                    ],
-                  ),
-                );
-              },
-            ),
-            Slider(
-              value: _progress,
-              min: 0.0,
-              max: 1.0,
-              onChanged: (newValue) {
-                setState(() {
-                  _progress = newValue;
-                });
-                _xController.value = _progress;
-                _yController.value = _progress;
-                _zController.value = _progress;
-              },
-            ),
-            TextButton(
-              onPressed: () {
-                if (_xController.isAnimating ||
-                    _yController.isAnimating ||
-                    _zController.isAnimating) {
-                  _xController.stop();
-                  _yController.stop();
-                  _zController.stop();
-                } else {
-                  setState(() {
-                    _yController
-                      ..reset()
-                      ..repeat();
-                  });
-                }
-              },
-              child: Text(
-                _xController.isAnimating ||
-                        _yController.isAnimating ||
-                        _zController.isAnimating
-                    ? "Start Animation"
-                    : "Start Animation",
-              ),
-            ),
-          ],
-        ),
-*/
+
+// Column(
+//           children: [
+//             const SizedBox(
+//               height: 100,
+//               width: double.infinity,
+//             ),
+//             AnimatedBuilder(
+//               animation: Listenable.merge([
+//                 _xController,
+//                 _yController,
+//                 _zController,
+//               ]),
+//               builder: (context, child) {
+//                 return Transform(
+//                   alignment: Alignment.center,
+//                   transform: Matrix4.identity()
+//                     ..rotateY(_animation.evaluate(
+//                       CurvedAnimation(
+//                         parent: _yController,
+//                         curve: Curves.li, // Use an easing curve
+//                       ),
+//                     )),
+//                   child: Stack(
+//                     children: [
+//                       SizedBox(
+//                           height: 200,
+//                           width: 200,
+//                           child: Image.asset(
+//                               "assets/images/galaxy-brain-default.png"))
+//                     ],
+//                   ),
+//                 );
+//               },
+//             ),
+//             Slider(
+//               value: _progress,
+//               min: 0.0,
+//               max: 1.0,
+//               onChanged: (newValue) {
+//                 setState(() {
+//                   _progress = newValue;
+//                 });
+//                 _xController.value = _progress;
+//                 _yController.value = _progress;
+//                 _zController.value = _progress;
+//               },
+//             ),
+//             TextButton(
+//               onPressed: () {
+//                 if (_xController.isAnimating ||
+//                     _yController.isAnimating ||
+//                     _zController.isAnimating) {
+//                   _xController.stop();
+//                   _yController.stop();
+//                   _zController.stop();
+//                 } else {
+//                   setState(() {
+//                     _yController
+//                       ..reset()
+//                       ..repeat();
+//                   });
+//                 }
+//               },
+//               child: Text(
+//                 _xController.isAnimating ||
+//                         _yController.isAnimating ||
+//                         _zController.isAnimating
+//                     ? "Start Animation"
+//                     : "Start Animation",
+//               ),
+//             ),
+//           ],
+//         ),
