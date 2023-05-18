@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:github_achievements/archievments_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:github_achievements/screens/archievments_screen.dart';
+import 'package:github_achievements/cubit/achievment_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +22,10 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.black,
         backgroundColor: Colors.black,
       ),
-      home: const HomePage(),
+      home: BlocProvider(
+        create: (context) => AchievementCubit(),
+        child: const HomePage(),
+      ),
     );
   }
 }
@@ -39,8 +44,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late AnimationController _yController;
   late AnimationController _zController;
   late Tween<double> _animation;
-
-  double _progress = 0.0;
 
   @override
   void initState() {
@@ -72,14 +75,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: AchievementsScreen(
-          animation: _animation,
-          yController: _yController,
-          scrollProgress: (value) {
-            _yController.value = convertScrollProgress(value);
-          },
-        ),
+      body: AchievementsScreen(
+        animation: _animation,
+        yController: _yController,
+        onScrollProgress: (value) {
+          _yController.value = convertScrollProgress(value);
+        },
       ),
     );
   }

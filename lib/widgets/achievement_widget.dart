@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:github_achievements/models/achievement_model.dart';
 
-import 'package:palette_generator/palette_generator.dart';
-
 import 'blur_background.dart';
 
-class AchievementWidget extends StatefulWidget {
+class AchievementWidget extends StatelessWidget {
   const AchievementWidget({
     Key? key,
     required this.achievement,
@@ -19,11 +17,6 @@ class AchievementWidget extends StatefulWidget {
   final AnimationController yController;
 
   @override
-  State<AchievementWidget> createState() => _AchievementWidgetState();
-}
-
-class _AchievementWidgetState extends State<AchievementWidget> {
-  @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -31,24 +24,24 @@ class _AchievementWidgetState extends State<AchievementWidget> {
         const SizedBox(height: 80),
         AnimatedBuilder(
           animation: Listenable.merge([
-            widget.yController,
+            yController,
           ]),
           builder: (context, child) {
             return Transform(
               alignment: Alignment.center,
               transform: Matrix4.identity()
-                ..rotateY(widget.animation.evaluate(
+                ..rotateY(animation.evaluate(
                   CurvedAnimation(
-                    parent: widget.yController,
+                    parent: yController,
                     curve: Curves.linear, // Use an easing curve
                   ),
                 )),
               child: Stack(
                 children: [
                   SizedBox(
-                    height: 200,
-                    width: 200,
-                    child: Image.asset(widget.achievement.imagePath),
+                    height: 250,
+                    width: 250,
+                    child: Image.asset(achievement.imagePath),
                   )
                 ],
               ),
@@ -59,7 +52,7 @@ class _AchievementWidgetState extends State<AchievementWidget> {
         Column(
           children: [
             Text(
-              widget.achievement.achName,
+              achievement.achName,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -67,7 +60,7 @@ class _AchievementWidgetState extends State<AchievementWidget> {
             ),
             const SizedBox(height: 5),
             Text(
-              "@mahmoud947 ${widget.achievement.achDis}",
+              "@mahmoud947 ${achievement.achDis}",
               style: TextStyle(
                 fontWeight: FontWeight.w300,
                 color: Colors.white.withOpacity(0.8),
@@ -90,7 +83,7 @@ class _AchievementWidgetState extends State<AchievementWidget> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Text(widget.achievement.unlockedDate),
+                Text(achievement.unlockedDate),
               ],
             ),
             const SizedBox(height: 4),
