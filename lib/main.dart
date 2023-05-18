@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:github_achievements/archievments_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -70,9 +71,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
+    return const Scaffold(
+      body: SafeArea(child: AchievementsScreen()),
+    );
+  }
+}
+/*
+Column(
           children: [
             const SizedBox(
               height: 100,
@@ -91,7 +96,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     ..rotateY(_animation.evaluate(
                       CurvedAnimation(
                         parent: _yController,
-                        curve: Curves.linear, // Use an easing curve
+                        curve: Curves.li, // Use an easing curve
                       ),
                     )),
                   child: Stack(
@@ -145,7 +150,4 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
+*/
