@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:github_achievements/models/achievement_model.dart';
 import 'package:github_achievements/widgets/achievement_widget.dart';
 import 'package:github_achievements/widgets/blur_background.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class AchievementsScreen extends StatefulWidget {
-  const AchievementsScreen(
-      {Key? key, required this.animation, required this.yController});
+  const AchievementsScreen({
+    Key? key,
+    required this.animation,
+    required this.yController,
+    required this.scrollProgress,
+  });
   final Tween<double> animation;
   final AnimationController yController;
-
+  final Function(double value) scrollProgress;
   @override
   State<AchievementsScreen> createState() => _AchievementsScreenState();
 }
@@ -17,37 +23,71 @@ class AchievementsScreen extends StatefulWidget {
 class _AchievementsScreenState extends State<AchievementsScreen> {
   late PageController _controller;
 
-  get pi => null;
+  late List<AchievementModel> achievements;
+
+  late Color startBackgroundColor;
+  late Color endBackgroundColor;
 
   @override
   void initState() {
     super.initState();
-    _controller = PageController();
 
+    startBackgroundColor = Colors.transparent;
+    endBackgroundColor = Colors.transparent;
+    _controller = PageController();
+    achievements = [
+      AchievementModel(
+        achDis: "answered discussions",
+        achName: 'Galaxy Brain',
+        unlockedDate: 'Unlocked 15 May',
+        imagePath: 'assets/images/galaxy-brain-default.png',
+      ),
+      AchievementModel(
+        achDis: "created a repository that has many stars.",
+        achName: 'Starstruck',
+        unlockedDate: 'Unlocked 18 May',
+        imagePath: 'assets/images/starstruck-default.png',
+      ),
+      AchievementModel(
+        achDis: "Gitty up!",
+        achName: 'Quickdraw',
+        unlockedDate: 'Unlocked 15 May',
+        imagePath: 'assets/images/quickdraw-default.png',
+      ),
+      AchievementModel(
+        achDis: "coauthored commits on merged pull requests.",
+        achName: 'Pair Extraordinaire',
+        unlockedDate: 'Unlocked 15 May',
+        imagePath: 'assets/images/pair-extraordinaire-default.png',
+      ),
+      AchievementModel(
+        achDis: "opened pull requests that have been merged.",
+        achName: 'Pull Shark',
+        unlockedDate: 'First unlocked on Dec 3, 2021',
+        imagePath: 'assets/images/pull-shark-default.png',
+      ),
+    ];
+
+    _extractDominantColor(achievements[0].imagePath);
     _controller.addListener(_handlePageChange);
   }
 
-  double convertScrollProgress(double value) {
-    final minValue = 0.0;
-    final maxValue = 1.0;
+  Future<void> _extractDominantColor(imagePath) async {
+    final paletteGenerator =
+        await PaletteGenerator.fromImageProvider(AssetImage(imagePath));
+    setState(() {
+      startBackgroundColor =
+          paletteGenerator.lightVibrantColor?.color ?? Colors.transparent;
 
-    if (value < minValue) {
-      return minValue;
-    } else if (value > maxValue) {
-      final range = maxValue - minValue;
-      final repeatedValue = (value - minValue) % range;
-      return repeatedValue + minValue;
-    } else {
-      return (value - minValue) / (maxValue - minValue);
-    }
+      endBackgroundColor =
+          paletteGenerator.darkVibrantColor?.color ?? Colors.transparent;
+    });
   }
 
-  void _handlePageChange() {
+  void _handlePageChange() async {
     double scrollProgress = _controller.page ?? 0.0;
-
     setState(() {
-      print(convertScrollProgress(scrollProgress));
-      widget.yController.value = convertScrollProgress(scrollProgress);
+      widget.scrollProgress(scrollProgress);
     });
   }
 
@@ -56,56 +96,49 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          AnimatedContainer(
+            duration: Duration(milliseconds: 500),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  startBackgroundColor,
+                  endBackgroundColor,
+                ],
+              ),
+            ),
+          ),
           PageView(
+            onPageChanged: (value) async {
+              await _extractDominantColor(achievements[value].imagePath);
+            },
             controller: _controller,
             children: [
               AchievementWidget(
-                achDis: "answered discussions",
-                achName: 'Galaxy Brain',
-                unlockedDate: 'Unlocked 15 May',
-                imagePath: 'assets/images/galaxy-brain-default.png',
                 animation: widget.animation,
                 yController: widget.yController,
+                achievement: achievements[0],
               ),
               AchievementWidget(
-                achDis: "answered discussions",
-                achName: 'Galaxy Brain',
-                unlockedDate: 'Unlocked 15 May',
-                imagePath: 'assets/images/pair-extraordinaire-default.png',
                 animation: widget.animation,
                 yController: widget.yController,
+                achievement: achievements[1],
               ),
               AchievementWidget(
-                achDis: "answered discussions",
-                achName: 'Galaxy Brain',
-                unlockedDate: 'Unlocked 15 May',
-                imagePath: 'assets/images/galaxy-brain-default.png',
                 animation: widget.animation,
                 yController: widget.yController,
+                achievement: achievements[2],
               ),
               AchievementWidget(
-                achDis: "answered discussions",
-                achName: 'Galaxy Brain',
-                unlockedDate: 'Unlocked 15 May',
-                imagePath: 'assets/images/galaxy-brain-default.png',
                 animation: widget.animation,
                 yController: widget.yController,
+                achievement: achievements[3],
               ),
               AchievementWidget(
-                achDis: "answered discussions",
-                achName: 'Galaxy Brain',
-                unlockedDate: 'Unlocked 15 May',
-                imagePath: 'assets/images/galaxy-brain-default.png',
                 animation: widget.animation,
                 yController: widget.yController,
-              ),
-              AchievementWidget(
-                achDis: "answered discussions",
-                achName: 'Galaxy Brain',
-                unlockedDate: 'Unlocked 15 May',
-                imagePath: 'assets/images/galaxy-brain-default.png',
-                animation: widget.animation,
-                yController: widget.yController,
+                achievement: achievements[4],
               ),
             ],
           ),
@@ -151,7 +184,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
             child: Center(
               child: SmoothPageIndicator(
                 controller: _controller,
-                count: 3,
+                count: 5,
                 effect: SlideEffect(
                     spacing: 4,
                     radius: 100,

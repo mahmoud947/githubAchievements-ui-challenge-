@@ -76,9 +76,27 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         child: AchievementsScreen(
           animation: _animation,
           yController: _yController,
+          scrollProgress: (value) {
+            _yController.value = convertScrollProgress(value);
+          },
         ),
       ),
     );
+  }
+
+  double convertScrollProgress(double value) {
+    final minValue = 0.0;
+    final maxValue = 1.0;
+
+    if (value < minValue) {
+      return minValue;
+    } else if (value > maxValue) {
+      final range = maxValue - minValue;
+      final repeatedValue = (value - minValue) % range;
+      return repeatedValue + minValue;
+    } else {
+      return (value - minValue) / (maxValue - minValue);
+    }
   }
 }
 
