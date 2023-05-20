@@ -69,7 +69,7 @@ class AchievementsScreen extends StatelessWidget {
                 ),
                 const Positioned(
                   right: 10,
-                  top: 10,
+                  top: 40,
                   width: 30,
                   height: 30,
                   child: BluerBackground(

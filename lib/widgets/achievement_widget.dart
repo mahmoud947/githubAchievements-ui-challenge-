@@ -41,7 +41,12 @@ class AchievementWidget extends StatelessWidget {
                   SizedBox(
                     height: 250,
                     width: 250,
-                    child: Image.asset(achievement.imagePath),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(360),
+                        child: Image.asset(
+                          achievement.imagePath,
+                          fit: BoxFit.cover,
+                        )),
                   )
                 ],
               ),

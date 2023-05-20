@@ -6,6 +6,7 @@ import 'package:github_achievements/screens/archievments_screen.dart';
 import 'package:github_achievements/cubit/achievment_cubit.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
